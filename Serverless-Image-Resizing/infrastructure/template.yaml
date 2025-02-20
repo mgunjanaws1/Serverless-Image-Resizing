@@ -1,0 +1,21 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Resources:
+  ImageResizingQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: ImageResizingQueue
+  ImageResizerLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: ImageResizer
+      Runtime: python3.12
+      Handler: image_resizer.lambda_handler
+      Code:
+        ZipFile: |
+          # Paste your Python code here
+      Environment:
+        Variables:
+          DEST_BUCKET: your-name-resized
+          THUMBNAIL_SIZE: 128
+      Role: !GetAtt LambdaExecutionRole.Arn
+  # Add S3/SQS policies and triggers here...
